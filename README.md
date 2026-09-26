@@ -3,9 +3,9 @@
 **HackFusion 2026 · Theme 8 — Multi-Agent AI Reasoning & Verification Engine**
 
 **Team TechNova · VEMU Institute of Technology**
-- G. SONIYA — III-II B.Tech, CSE-AI
-- S. SANIYA — III-II B.Tech, CSE-AI
-- T. MEGHANA — III-II B.Tech, CSE-AI
+- G. SONIYA — III-I B.Tech, CSE-AI
+- S. SANIYA — III-I B.Tech, CSE-AI
+- T. MEGHANA — III-I B.Tech, CSE-AI
 
 VERITAS-X separates evidence retrieval from answer acceptance. The browser UI is served by a small Python backend that retrieves live Wikipedia sources, runs deterministic arithmetic and safety checks, extracts candidate claims, checks each claim against each source passage, detects conflicts, and routes outcomes through a central decision gate.
 

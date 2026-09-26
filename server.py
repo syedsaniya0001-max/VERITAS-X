@@ -780,7 +780,7 @@ class VeritasHandler(SimpleHTTPRequestHandler):
 
 
 def run_server() -> None:
-    host = os.environ.get("HOST", "127.0.0.1")
+    host = os.environ.get("HOST", "0.0.0.0")
     server = ThreadingHTTPServer((host, PORT), VeritasHandler)
     display_host = "localhost" if host in {"127.0.0.1", "::1"} else host
     print(f"VERITAS-X server running at http://{display_host}:{PORT}")
