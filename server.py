@@ -15,7 +15,8 @@ from tool_use import SandboxExecutor, ToolUseAgent, ToolValidationError
 from verification_logic import AmbiguityDetector, ContradictionEngine, DecisionGate, IndependentVerifier, SelfCorrectionLoop, build_proof_graph
 
 ROOT = Path(__file__).resolve().parent
-PORT = int(os.environ.get("PORT", "8080"))
+DEFAULT_PORT = 8000
+PORT = int(os.environ.get("PORT", str(DEFAULT_PORT)))
 MAX_TASK_LENGTH = 2000
 WIKIPEDIA_LANGUAGES = {"en", "te", "hi", "ta", "kn", "ml"}
 TOOL_AGENT = ToolUseAgent()
@@ -781,9 +782,19 @@ class VeritasHandler(SimpleHTTPRequestHandler):
 
 def run_server() -> None:
     host = os.environ.get("HOST", "0.0.0.0")
-    server = ThreadingHTTPServer((host, PORT), VeritasHandler)
+    last_error: OSError | None = None
+    selected_port = PORT
+    for candidate in dict.fromkeys([selected_port, DEFAULT_PORT, 8080, 5000]):
+        try:
+            server = ThreadingHTTPServer((host, candidate), VeritasHandler)
+            selected_port = candidate
+            break
+        except OSError as error:
+            last_error = error
+    else:
+        raise last_error or OSError("Could not bind a local port for VERITAS-X.")
     display_host = "localhost" if host in {"127.0.0.1", "::1"} else host
-    print(f"VERITAS-X server running at http://{display_host}:{PORT}")
+    print(f"VERITAS-X server running at http://{display_host}:{selected_port}")
     print("Live evidence retrieval: Wikipedia API")
     if os.environ.get("VERITAS_MODEL", "").strip():
         print(f"Reasoner model configured: {os.environ['VERITAS_MODEL']}")
